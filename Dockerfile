@@ -26,6 +26,11 @@ LABEL org.opencontainers.image.source="https://github.com/ajeetraina/penpot-mcp"
 LABEL org.opencontainers.image.description="Model Context Protocol server for Penpot"
 LABEL org.opencontainers.image.licenses="MIT"
 
+# Install procps for healthcheck (provides pgrep)
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    procps \
+    && rm -rf /var/lib/apt/lists/*
+
 # Create non-root user for security
 RUN useradd -m -u 1000 penpot && \
     mkdir -p /app /app/cache && \
@@ -46,10 +51,9 @@ USER penpot
 # Expose port for MCP server (when running in SSE mode)
 EXPOSE 5000
 
-# Health check - modified to check if process is running
-HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+# Health check - check if process is running
+HEALTHCHECK --interval=30s --timeout=10s --start-period=10s --retries=3 \
     CMD pgrep -f "penpot_mcp.server.mcp_server" > /dev/null || exit 1
 
 # Default command - run MCP server in stdio mode
-# For standalone mode, override with: CMD ["python", "-m", "penpot_mcp.server.mcp_server", "--mode", "sse"]
 CMD ["python", "-u", "-m", "penpot_mcp.server.mcp_server"]
