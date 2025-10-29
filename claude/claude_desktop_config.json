@@ -28,7 +28,7 @@
     },
     "penpot": {
       "command": "docker",
-      "args": 
+      "args": [
         "run",
         "--rm",
         "-i",
