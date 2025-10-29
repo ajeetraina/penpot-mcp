@@ -34,7 +34,8 @@
         "penpot-mcp-server",
         "python",
         "-m",
-        "penpot_mcp.server.mcp_server"
+        "penpot_mcp.server.mcp_server",
+         "2>/dev/null"
       ]
     }
   }
