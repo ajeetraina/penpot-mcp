@@ -88,7 +88,7 @@ docker run -d \
   -e PENPOT_USERNAME=your_username \
   -e PENPOT_PASSWORD=your_password \
   -p 5000:5000 \
-  ajeetraina/penpot-mcp:latest
+  ajeetraina777/penpot-mcp:latest
 ```
 
 ## 🔧 Configuration
