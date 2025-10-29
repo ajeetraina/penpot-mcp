@@ -43,12 +43,13 @@ COPY --chown=penpot:penpot . .
 # Switch to non-root user
 USER penpot
 
-# Expose port for MCP server
+# Expose port for MCP server (when running in SSE mode)
 EXPOSE 5000
 
-# Health check
+# Health check - modified to check if process is running
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-    CMD python -c "import sys; sys.exit(0)"
+    CMD pgrep -f "penpot_mcp.server.mcp_server" > /dev/null || exit 1
 
-# Default command - run MCP server
-CMD ["python", "-m", "penpot_mcp.server.mcp_server"]
+# Default command - run MCP server in stdio mode
+# For standalone mode, override with: CMD ["python", "-m", "penpot_mcp.server.mcp_server", "--mode", "sse"]
+CMD ["python", "-u", "-m", "penpot_mcp.server.mcp_server"]
