@@ -28,14 +28,15 @@
     },
     "penpot": {
       "command": "docker",
-      "args": [
-        "exec",
+      "args": 
+        "run",
+        "--rm",
         "-i",
-        "penpot-mcp-server",
-        "python",
-        "-m",
-        "penpot_mcp.server.mcp_server",
-         "2>/dev/null"
+        "-e", "PENPOT_USERNAME=addmyname@email.com",
+        "-e", "PENPOT_PASSWORD=change_me",
+        "-e", "PENPOT_API_URL=https://design.penpot.app/api",
+        "ajeetraina777/penpot-mcp:latest",
+        "2>/dev/null"
       ]
     }
   }
