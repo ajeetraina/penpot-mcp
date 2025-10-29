@@ -30,13 +30,13 @@
       "command": "docker",
       "args": [
         "run",
-        "--rm",
         "-i",
-        "-e", "PENPOT_USERNAME=addmyname@email.com",
-        "-e", "PENPOT_PASSWORD=change_me",
-        "-e", "PENPOT_API_URL=https://design.penpot.app/api",
-        "ajeetraina777/penpot-mcp:latest",
-        "2>/dev/null"
+        "--rm",
+        "-e",
+        "PENPOT_URL=https://design.penpot.app",
+        "-e",
+        "PENPOT_TOKEN=eyJhbGciOiXXXV.EK_Tzo6M7sI7PXevibIXXXZe7Jx8QL4byQa5IJubP0-hJwkFgLSq_-Ha6LWU1aiU.-1pyoJ3wFLZhGw-spmD9ug",
+        "ajeetraina777/penpot-mcp:latest"
       ]
     }
   }
