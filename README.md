@@ -19,6 +19,9 @@
   <a href="https://pypi.org/project/penpot-mcp/">
     <img src="https://img.shields.io/pypi/v/penpot-mcp" alt="PyPI version">
   </a>
+  <a href="https://hub.docker.com/r/ajeetraina/penpot-mcp">
+    <img src="https://img.shields.io/docker/v/ajeetraina/penpot-mcp?label=docker" alt="Docker Image">
+  </a>
   <a href="https://github.com/montevive/penpot-mcp/actions">
     <img src="https://img.shields.io/github/workflow/status/montevive/penpot-mcp/CI" alt="Build Status">
   </a>
@@ -37,6 +40,7 @@
 - **🔍 Intelligent Design Search**: Find design components and patterns across your projects using natural language
 - **📊 Design System Management**: Automatically document and maintain design systems with AI assistance
 - **🎨 Cross-Platform Integration**: Works with any MCP-compatible AI assistant (Claude Desktop, Cursor IDE, etc.)
+- **🐳 Docker Support**: Easy containerized deployment for production environments
 
 ## 🎥 Demo Video
 
@@ -56,6 +60,7 @@ Check out our demo video to see Penpot MCP in action:
 ### 🛠️ Developer Tools
 - **Command-line Utilities**: Powerful CLI tools for design file analysis and validation
 - **Python SDK**: Comprehensive Python library for custom integrations
+- **Docker Container**: Production-ready containerization
 - **REST API**: HTTP endpoints for web application integration
 - **Extensible Architecture**: Plugin system for custom AI workflows
 
@@ -90,26 +95,67 @@ Check out our demo video to see Penpot MCP in action:
 
 ### Prerequisites
 
-- **Python 3.12+** (Latest Python recommended for optimal performance)
+- **Python 3.12+** OR **Docker** (for containerized deployment)
 - **Penpot Account** ([Sign up free](https://penpot.app/))
 - **Claude Desktop or Cursor IDE** (Optional, for AI integration)
 
 ## Installation
 
-### Prerequisites
+### Option 1: Using Docker (Recommended for Production) 🐳
 
-- Python 3.12+
-- Penpot account credentials
+The fastest way to get started! See our comprehensive [Docker Deployment Guide](DOCKER.md).
 
-### Installation
+```bash
+# Quick start with Docker Compose
+git clone https://github.com/ajeetraina/penpot-mcp.git
+cd penpot-mcp
+cp env.example .env
+# Edit .env with your credentials
+docker compose up -d
+```
 
-#### Option 1: Install from PyPI
+Or run directly from Docker Hub:
+
+```bash
+docker run -d \
+  --name penpot-mcp-server \
+  -e PENPOT_USERNAME=your_username \
+  -e PENPOT_PASSWORD=your_password \
+  -p 5000:5000 \
+  ajeetraina/penpot-mcp:latest
+```
+
+**Benefits of Docker deployment:**
+- ✅ No Python installation required
+- ✅ Isolated environment
+- ✅ Easy scaling and deployment
+- ✅ Production-ready configuration
+- ✅ Multi-architecture support (amd64, arm64)
+
+**Docker Quick Commands:**
+```bash
+# Build locally
+make docker-build
+
+# Run with Docker Compose
+make docker-compose-up
+
+# View logs
+make docker-compose-logs
+
+# Stop services
+make docker-compose-down
+```
+
+See [DOCKER.md](DOCKER.md) for detailed Docker deployment instructions.
+
+### Option 2: Install from PyPI
 
 ```bash
 pip install penpot-mcp
 ```
 
-#### Option 2: Using uv (recommended for modern Python development)
+### Option 3: Using uv (recommended for modern Python development)
 
 ```bash
 # Install directly with uvx (when published to PyPI)
@@ -122,11 +168,11 @@ uvx --from . penpot-mcp
 uv add penpot-mcp
 ```
 
-#### Option 3: Install from source
+### Option 4: Install from source
 
 ```bash
 # Clone the repository
-git clone https://github.com/montevive/penpot-mcp.git
+git clone https://github.com/ajeetraina/penpot-mcp.git
 cd penpot-mcp
 
 # Using uv (recommended)
@@ -161,6 +207,12 @@ DEBUG=true
 
 ### Running the MCP Server
 
+**With Docker:**
+```bash
+docker compose up -d
+```
+
+**With Python:**
 ```bash
 # Using uvx (when published to PyPI)
 uvx penpot-mcp
@@ -245,6 +297,8 @@ penpot-client
 
 ## MCP Resources & Tools
 
+For detailed documentation on all available MCP tools, see [MCP_TOOLS.md](MCP_TOOLS.md).
+
 ### Resources
 - `server://info` - Server status and information
 - `penpot://schema` - Penpot API schema as JSON
@@ -260,6 +314,8 @@ penpot-client
 - `get_object_tree` - Get the object tree structure for a Penpot object
 - `search_object` - Search for objects within a Penpot file by name
 
+📖 **[Read the complete MCP Tools documentation →](MCP_TOOLS.md)**
+
 ## AI Integration
 
 The Penpot MCP server can be integrated with AI assistants using the Model Context Protocol. It supports both Claude Desktop and Cursor IDE for seamless design workflow automation.
@@ -270,6 +326,24 @@ For detailed Claude Desktop setup instructions, see [CLAUDE_INTEGRATION.md](CLAU
 
 Add the following configuration to your Claude Desktop config file (`~/Library/Application Support/Claude/claude_desktop_config.json` on macOS or `%APPDATA%\Claude\claude_desktop_config.json` on Windows):
 
+**Using Docker:**
+```json
+{
+  "mcpServers": {
+    "penpot": {
+      "command": "docker",
+      "args": [
+        "run", "--rm", "-i",
+        "-e", "PENPOT_USERNAME=your_username",
+        "-e", "PENPOT_PASSWORD=your_password",
+        "ajeetraina/penpot-mcp:latest"
+      ]
+    }
+  }
+}
+```
+
+**Using Python:**
 ```json
 {
   "mcpServers": {
@@ -293,6 +367,7 @@ Cursor IDE supports MCP servers through its AI integration features. To configur
 1. **Install the MCP server** (if not already installed):
    ```bash
    pip install penpot-mcp
+   # Or use Docker: docker pull ajeetraina/penpot-mcp:latest
    ```
 
 2. **Configure Cursor settings** by adding the MCP server to your Cursor configuration. Open Cursor settings and add:
@@ -342,6 +417,14 @@ Both Claude Desktop and Cursor integration provide:
 - **Real-time design feedback** and suggestions
 - **Design system documentation** generation
 
+## 📚 Documentation
+
+- **[MCP Tools Documentation](MCP_TOOLS.md)** - Complete guide to all available MCP tools
+- **[Docker Deployment Guide](DOCKER.md)** - Comprehensive Docker deployment instructions
+- **[Claude Integration Guide](CLAUDE_INTEGRATION.md)** - Step-by-step Claude Desktop setup
+- **[Contributing Guidelines](CONTRIBUTING.md)** - How to contribute to the project
+- **[Security Policy](SECURITY.md)** - Security best practices and reporting
+
 ## Package Structure
 
 ```
@@ -371,6 +454,9 @@ uv run pytest
 # Run with coverage
 uv run pytest --cov=penpot_mcp tests/
 
+# Using Docker
+docker run --rm penpot-mcp:latest pytest
+
 # Using traditional pip
 pip install -e ".[dev]"
 pytest
@@ -399,7 +485,7 @@ pre-commit install
 ./lint.py --autofix
 ```
 
-## Contributing
+## 🤝 Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
@@ -411,11 +497,26 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 Please make sure your code follows the project's coding standards and includes appropriate tests.
 
-## License
+See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed contribution guidelines.
+
+## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## Acknowledgments
+## 🙏 Acknowledgments
 
 - [Penpot](https://penpot.app/) - The open-source design and prototyping platform
 - [Model Context Protocol](https://modelcontextprotocol.io) - The standardized protocol for AI model context
+- [Docker](https://docker.com) - Container platform for easy deployment
+
+## 📞 Support & Community
+
+- **GitHub Issues**: [Report bugs or request features](https://github.com/ajeetraina/penpot-mcp/issues)
+- **Docker Hub**: [Pre-built images](https://hub.docker.com/r/ajeetraina/penpot-mcp)
+- **Documentation**: [Full documentation](https://github.com/ajeetraina/penpot-mcp#readme)
+
+---
+
+<p align="center">
+  Made with ❤️ by the Penpot MCP community
+</p>
