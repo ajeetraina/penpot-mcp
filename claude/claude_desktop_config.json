@@ -1,0 +1,41 @@
+{
+  "mcpServers": {
+    "node-code-sandbox": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "-v",
+        "/var/run/docker.sock:/var/run/docker.sock",
+        "-v",
+        "/Users/ajeetsraina/Desktop/sandbox-output:/root",
+        "mcp/node-code-sandbox"
+      ],
+      "env": {
+        "FILES_DIR": "/root",
+        "SANDBOX_MEMORY_LIMIT": "512m",
+        "SANDBOX_CPU_LIMIT": "0.75"
+      }
+    },
+    "MCP_DOCKER": {
+      "command": "docker",
+      "args": [
+        "mcp",
+        "gateway",
+        "run"
+      ]
+    },
+    "penpot": {
+      "command": "docker",
+      "args": [
+        "exec",
+        "-i",
+        "penpot-mcp-server",
+        "python",
+        "-m",
+        "penpot_mcp.server.mcp_server"
+      ]
+    }
+  }
+}
